@@ -111,7 +111,7 @@ const createGraph = (gradeList) => {
   chart.update();
 };
 
-const getGPA = (gradeList) => {
+const getGPA = (gradeList,degree) => {
   let count = 0;
   let gp = 0;
 
@@ -121,7 +121,7 @@ const getGPA = (gradeList) => {
 
   gp =
     gradeList[0] * 4.3 + gradeList[1] * 4 + gradeList[2] * 3 + gradeList[3] * 2;
-  return gp / count;
+  return gp / degree;
 };
 
 form.seiseki.addEventListener("change", function (e) {
@@ -138,14 +138,21 @@ form.seiseki.addEventListener("change", function (e) {
       }
     }
 
+    let degree = 0;
+
+    for (let i=0; i<courseList.length; i++) {
+      if (["A+","A","B","C","D"].indexOf(courseList[i][7]) != -1){
+        degree = degree + Number(courseList[i][4]);
+      }
+    }
+
     //Remove the header
     courseList.shift();
-    console.log(courseList);
     gradeList = getGradeList(courseList);
     createGraph(gradeList);
 
     const gpa =
-      Math.round(getGPA(gradeList) * Math.pow(10, 2)) / Math.pow(10, 2);
+      Math.round(getGPA(gradeList,degree) * Math.pow(10, 2)) / Math.pow(10, 2);
     const message1 = courseList.length + "個の授業が検出されました";
     const message2 =
       " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外の対象外の科目は除外していません)";
