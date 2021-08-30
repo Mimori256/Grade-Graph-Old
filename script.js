@@ -133,11 +133,14 @@ form.seiseki.addEventListener("change", function (e) {
     const courseList = [];
 
     for (let i = 0; i < data.length; i++) {
-      courseList.push(data[i].split(","));
+      if (data[i].split(",")[8] != "D") {
+        courseList.push(data[i].split(","));
+      }
     }
 
     //Remove the header
     courseList.shift();
+    console.log(courseList);
     gradeList = getGradeList(courseList);
     createGraph(gradeList);
 
@@ -145,7 +148,7 @@ form.seiseki.addEventListener("change", function (e) {
       Math.round(getGPA(gradeList) * Math.pow(10, 2)) / Math.pow(10, 2);
     const message1 = courseList.length + "個の授業が検出されました";
     const message2 =
-      " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、対象外の科目は除外していません)";
+      " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外の対象外の科目は除外していません)";
     document.getElementById("message1").innerHTML = message1;
     document.getElementById("message2").innerHTML = message2;
     document.getElementById("gpa").innerHTML = gpa;
