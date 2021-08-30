@@ -1,0 +1,21 @@
+body {
+  text-align: center;
+}
+
+canvas {
+  position: relative;
+  max-width: 100%;
+  max-height: 50%;
+}
+
+#gpa {
+  font-size: 1.5rem;
+}
+
+#message {
+  font-size: 1rem;
+}
+
+#warning {
+  color: crimson;
+}

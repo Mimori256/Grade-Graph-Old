@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <title>成績</title>
+  </head>
+  <body>
+    <div>
+      <h1>成績表示</h1>
+      <div id="message1">ファイルを選択してください</div>
+      <br />
+      <form name="seiseki">
+        <input type="file" id="seiseki" accept=".csv" required />
+      </form>
+      <br />
+      <div id="selection">
+        <select name="nendo">
+          <option value="all">すべての年度</option>
+          <option value="2021">2021</option>
+        </select>
+      </div>
+      <br /><br />
+
+      <canvas id="chart" style="position: relative"></canvas>
+      <br />
+      <div id="message2">
+        <h2>使い方</h2>
+        <p>
+          <a href="https://twins.tsukuba.ac.jp/" target="_blank" rel="noopener"
+            >Twins</a
+          >にログインして、「成績」をクリックして、ページ下部の表示を200件にして表示をクリックしてから、CSVファイルをダウンロードしてください
+        </p>
+        <img src="resource/img/1.png" alt="twins" />
+        <p>ダウンロードしたファイルをこのページで選択してください</p>
+      </div>
+      <div id="gpa"></div>
+      <h2>注意</h2>
+      <div id="warning">
+        このページで算出されるGPAは対象外科目を考慮していません
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+  </body>
+</html>
