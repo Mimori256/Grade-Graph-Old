@@ -51,6 +51,31 @@ const getGradeList = (courseList) => {
   return [ap, a, b, c, d, p, f, pending];
 };
 
+const getGp = (courseList) => {
+  let gp = 0;
+
+  for (let i = 0; i < courseList.length; i++) {
+    grade = courseList[i][7];
+    degree = Number(courseList[i][4]);
+
+    switch (grade) {
+      case "A+":
+        gp = gp + 4.3 * degree;
+        break;
+      case "A":
+        gp = gp + 4 * degree;
+        break;
+      case "B":
+        gp = gp + 3 * degree;
+        break;
+      case "C":
+        gp = gp + 2 * degree;
+        break;
+    }
+  }
+  return gp;
+};
+
 const createLabels = (l) => {
   return [
     "A+ (".concat(l[0], "%)"),
@@ -111,16 +136,7 @@ const createGraph = (gradeList) => {
   chart.update();
 };
 
-const getGPA = (gradeList,degree) => {
-  let count = 0;
-  let gp = 0;
-
-  for (let i = 0; i < 5; i++) {
-    count = count + gradeList[i];
-  }
-
-  gp =
-    gradeList[0] * 4.3 + gradeList[1] * 4 + gradeList[2] * 3 + gradeList[3] * 2;
+const getGPA = (gp, degree) => {
   return gp / degree;
 };
 
@@ -140,8 +156,8 @@ form.seiseki.addEventListener("change", function (e) {
 
     let degree = 0;
 
-    for (let i=0; i<courseList.length; i++) {
-      if (["A+","A","B","C","D"].indexOf(courseList[i][7]) != -1){
+    for (let i = 0; i < courseList.length; i++) {
+      if (["A+", "A", "B", "C", "D"].indexOf(courseList[i][7]) != -1) {
         degree = degree + Number(courseList[i][4]);
       }
     }
@@ -149,11 +165,12 @@ form.seiseki.addEventListener("change", function (e) {
     //Remove the header
     courseList.shift();
     gradeList = getGradeList(courseList);
+    gp = getGp(courseList);
     createGraph(gradeList);
 
     const gpa =
-      Math.round(getGPA(gradeList,degree) * Math.pow(10, 2)) / Math.pow(10, 2);
-    const message1 = courseList.length + "個の授業が検出されました";
+      Math.round(getGPA(gp, degree) * Math.pow(10, 2)) / Math.pow(10, 2);
+    const message1 = courseList.length - 1 + "個の授業が検出されました";
     const message2 =
       " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外の対象外の科目は除外していません)";
     document.getElementById("message1").innerHTML = message1;
