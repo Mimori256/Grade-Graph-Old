@@ -53,6 +53,8 @@ const getGradeList = (courseList) => {
 
 const getGp = (courseList) => {
   let gp = 0;
+  let degree = 0;
+  let grade = "";
 
   for (let i = 0; i < courseList.length; i++) {
     grade = courseList[i][7];
@@ -147,32 +149,49 @@ form.seiseki.addEventListener("change", function (e) {
   reader.addEventListener("load", function () {
     const data = formData(reader.result).split("\n");
     const courseList = [];
+    const gpaCourseList = [];
+
+    //Get the values of the checkboxes
+    const isGraphChecked = document.getElementById("graphCheck").checked;
+    const isGpaChecked = document.getElementById("gpaCheck").checked;
 
     for (let i = 0; i < data.length; i++) {
-      if (data[i].split(",")[8] != "D") {
+      if (data[i].split(",")[8] == "D" && isGraphChecked) {
         courseList.push(data[i].split(","));
       }
-    }
 
-    let degree = 0;
+      if (data[i].split(",")[8] == "D" && isGpaChecked) {
+        gpaCourseList.push(data[i].split(","));
+      }
 
-    for (let i = 0; i < courseList.length; i++) {
-      if (["A+", "A", "B", "C", "D"].indexOf(courseList[i][7]) != -1) {
-        degree = degree + Number(courseList[i][4]);
+      if (data[i].split(",")[8] != "D") {
+        courseList.push(data[i].split(","));
+        gpaCourseList.push(data[i].split(","));
       }
     }
 
     //Remove the header
     courseList.shift();
+    gpaCourseList.shift();
+
+    let degree = 0;
+
+    //Caluculate the number of degree
+    for (let i = 0; i < gpaCourseList.length; i++) {
+      if (["A+", "A", "B", "C", "D"].indexOf(gpaCourseList[i][7]) != -1) {
+        degree = degree + Number(gpaCourseList[i][4]);
+      }
+    }
+
     gradeList = getGradeList(courseList);
-    gp = getGp(courseList);
+    gp = getGp(gpaCourseList);
     createGraph(gradeList);
 
     const gpa =
       Math.round(getGPA(gp, degree) * Math.pow(10, 2)) / Math.pow(10, 2);
     const message1 = courseList.length - 1 + "個の授業が検出されました";
     const message2 =
-      " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外の対象外の科目は除外していません)";
+      " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外のGPA対象外科目の除外には対応していません)";
     document.getElementById("message1").innerHTML = message1;
     document.getElementById("message2").innerHTML = message2;
     document.getElementById("gpa").innerHTML = gpa;
