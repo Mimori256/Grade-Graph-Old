@@ -148,7 +148,16 @@ const getGPA = (gp, degree) => {
 
 const createTable = (courseList) => {
   const ref = document.getElementById("courseTable");
+  let grade;
   let table = document.createElement("table");
+  let apList = [];
+  let aList = [];
+  let bList = [];
+  let cList = [];
+  let dList = [];
+  let pList = [];
+  let fList = [];
+  let pendingList = [];
   const gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
   const gradeColor = [
     "#FF9999",
@@ -161,26 +170,61 @@ const createTable = (courseList) => {
     "#CCCCCC",
   ];
 
-  //Sort course list
-  const compare = (a, b) => {
-    return gradeOrder.indexOf(a[7]) > gradeOrder.indexOf(b[7]);
-  };
-
-  courseList.sort(compare);
-
   for (let i = 0; i < courseList.length; i++) {
+    grade = courseList[i][7];
+
+    switch (grade) {
+      case "A+":
+        apList.push(courseList[i]);
+        break;
+      case "A":
+        aList.push(courseList[i]);
+        break;
+      case "B":
+        bList.push(courseList[i]);
+        break;
+      case "C":
+        cList.push(courseList[i]);
+        break;
+      case "D":
+        dList.push(courseList[i]);
+        break;
+      case "P":
+        pList.push(courseList[i]);
+        break;
+      case "F":
+        fList.push(courseList[i]);
+        break;
+      case "履修中":
+        pendingList.push(courseList[i]);
+        break;
+    }
+  }
+
+  let newCourseList = [].concat(
+    apList,
+    aList,
+    bList,
+    cList,
+    dList,
+    pList,
+    fList,
+    pendingList
+  );
+
+  for (let i = 0; i < newCourseList.length; i++) {
     let row = table.insertRow();
 
     let cell1 = row.insertCell();
-    cell1.innerText = courseList[i][3];
+    cell1.innerText = newCourseList[i][3];
 
     let cell2 = row.insertCell();
-    cell2.innerText = courseList[i][7];
+    cell2.innerText = newCourseList[i][7];
 
     cell1.style.backgroundColor =
-      gradeColor[gradeOrder.indexOf(courseList[i][7])];
+      gradeColor[gradeOrder.indexOf(newCourseList[i][7])];
     cell2.style.backgroundColor =
-      gradeColor[gradeOrder.indexOf(courseList[i][7])];
+      gradeColor[gradeOrder.indexOf(newCourseList[i][7])];
   }
 
   table.setAttribute("align", "center");
@@ -265,7 +309,6 @@ form.seiseki.addEventListener("change", function (e) {
 
     //Create table
     courseList.pop();
-    console.log(courseList);
     createTable(courseList);
   });
 });
