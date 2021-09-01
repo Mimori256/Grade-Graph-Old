@@ -15,9 +15,10 @@
       <br />
       <div id="selection">
         年度を選択
-        <select name="nendo">
-          <option value="all">すべての年度</option>
+        <select id="nendo">
+          <option value="all" selected>すべての年度</option>
           <option value="2021">2021</option>
+          <option value="2020">2020</option>
         </select>
         <br /><br />
         <input
@@ -29,7 +30,7 @@
       </div>
       <br /><br />
 
-      <canvas id="chart" style="position: relative"></canvas>
+      <canvas id="chart"></canvas>
       <br />
       <div id="message2">
         <h2>使い方</h2>
@@ -44,6 +45,7 @@
       <br />
       <div id="gpa"></div>
       <br />
+      <div id="courseTable"></div>
       <h2>注意</h2>
       <div id="warning">
         <p>このページで算出されるGPAは対象外科目を考慮していません</p>
