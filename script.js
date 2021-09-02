@@ -8,47 +8,19 @@ const formData = (data) => {
 };
 
 const getGradeList = (courseList) => {
-  let ap = 0,
-    a = 0,
-    b = 0,
-    c = 0,
-    d = 0,
-    p = 0,
-    f = 0,
-    pending = 0;
+  let gradeList = [0, 0, 0, 0, 0, 0, 0, 0];
+  const gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
+
+  pending = 0;
   let grade = "";
+  let gradeIndex;
 
   for (let i = 0; i < courseList.length; i++) {
     grade = courseList[i][7];
-
-    switch (grade) {
-      case "A+":
-        ap++;
-        break;
-      case "A":
-        a++;
-        break;
-      case "B":
-        b++;
-        break;
-      case "C":
-        c++;
-        break;
-      case "D":
-        d++;
-        break;
-      case "P":
-        p++;
-        break;
-      case "F":
-        f++;
-        break;
-      case "履修中":
-        pending++;
-        break;
-    }
+    gradeIndex = gradeOrder.indexOf(grade);
+    gradeList[gradeIndex]++;
   }
-  return [ap, a, b, c, d, p, f, pending];
+  return gradeList;
 };
 
 const filterByYear = (list, year) => {
@@ -58,26 +30,22 @@ const filterByYear = (list, year) => {
 const getGp = (courseList) => {
   let gp = 0;
   let degree = 0;
+  let gradeIndex;
   let grade = "";
+
+  const gradeOrder = ["A+", "A", "B", "C", "D"];
+  let degreeList = [0, 0, 0, 0, 0];
+  const multipleList = [4.3, 4, 3, 2, 0];
 
   for (let i = 0; i < courseList.length; i++) {
     grade = courseList[i][7];
     degree = Number(courseList[i][4]);
+    gradeIndex = gradeOrder.indexOf(grade);
+    degreeList[gradeIndex]++;
+  }
 
-    switch (grade) {
-      case "A+":
-        gp = gp + 4.3 * degree;
-        break;
-      case "A":
-        gp = gp + 4 * degree;
-        break;
-      case "B":
-        gp = gp + 3 * degree;
-        break;
-      case "C":
-        gp = gp + 2 * degree;
-        break;
-    }
+  for (let i = 0; i < 5; i++) {
+    gp += degreeList[i] * multipleList[i];
   }
   return gp;
 };
@@ -98,7 +66,7 @@ const createLabels = (l) => {
 const getPercentage = (l) => {
   const getSum = (l) => l.reduce((a, x) => a + x);
   const sum = getSum(l);
-  const percentageList = [];
+  let percentageList = [];
   let value;
 
   l.forEach((n) => {
@@ -150,14 +118,7 @@ const createTable = (courseList) => {
   const ref = document.getElementById("courseTable");
   let grade;
   let table = document.createElement("table");
-  let apList = [];
-  let aList = [];
-  let bList = [];
-  let cList = [];
-  let dList = [];
-  let pList = [];
-  let fList = [];
-  let pendingList = [];
+  let tmpList = [[], [], [], [], [], [], [], []];
   const gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
   const gradeColor = [
     "#FF9999",
@@ -172,45 +133,13 @@ const createTable = (courseList) => {
 
   for (let i = 0; i < courseList.length; i++) {
     grade = courseList[i][7];
-
-    switch (grade) {
-      case "A+":
-        apList.push(courseList[i]);
-        break;
-      case "A":
-        aList.push(courseList[i]);
-        break;
-      case "B":
-        bList.push(courseList[i]);
-        break;
-      case "C":
-        cList.push(courseList[i]);
-        break;
-      case "D":
-        dList.push(courseList[i]);
-        break;
-      case "P":
-        pList.push(courseList[i]);
-        break;
-      case "F":
-        fList.push(courseList[i]);
-        break;
-      case "履修中":
-        pendingList.push(courseList[i]);
-        break;
-    }
+    tmpList[gradeOrder.indexOf(grade)].push(courseList[i]);
   }
 
-  let newCourseList = [].concat(
-    apList,
-    aList,
-    bList,
-    cList,
-    dList,
-    pList,
-    fList,
-    pendingList
-  );
+  //Create a new list ordered by grade
+  let newCourseList = tmpList.reduce( (newArr,elem) => {
+    return  newArr.concat(elem)
+  }, [] );
 
   for (let i = 0; i < newCourseList.length; i++) {
     let row = table.insertRow();
@@ -288,7 +217,7 @@ form.seiseki.addEventListener("change", function (e) {
     //Calculate the number of degree
     for (let i = 0; i < gpaCourseList.length; i++) {
       if (["A+", "A", "B", "C", "D"].indexOf(gpaCourseList[i][7]) !== -1) {
-        degree = degree + Number(gpaCourseList[i][4]);
+        degree += Number(gpaCourseList[i][4]);
       }
     }
 
