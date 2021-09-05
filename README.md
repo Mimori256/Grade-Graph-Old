@@ -1,5 +1,6 @@
 # Grade-Graph
-Twinsの成績を円グラフで表示、現在GPA計算にも対応できるようにしている。開発中です。(画像はサンプルです)
-![screenshot](https://user-images.githubusercontent.com/80367947/131415274-bb6d134c-7e24-4025-b231-cdcc3c0671b5.png)
-
+Twinsの成績の円グラフ、GPAを表示し、検出された科目を成績順に色分けして並べて表示する。GPAの数値については、教職の除外は任意でできますが、各学類ごとのGPA対象外科目を考慮していないため、正確なGPAを確認したい場合は、Twinsを参照してください。次のURLからアクセスできます。
 https://mimori256.github.io/Grade-Graph/
+
+## スクリーンショット
+![new_sc](https://user-images.githubusercontent.com/80367947/132111558-0cf1b8c0-4db5-424c-8b58-df546c67a2aa.png)
