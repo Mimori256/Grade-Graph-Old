@@ -102,7 +102,7 @@ const getGPA = (gp: number, degree: number): number => {
   return gp / degree;
 };
 
-const createGraph = (gradeList: number[]) => {
+const createGraph = (gradeList: number[]): void => {
   const ctx = document.getElementById("chart");
   const percentageData = getPercentage(gradeList);
   const labels = createLabels(percentageData);
@@ -188,7 +188,8 @@ form.seiseki.addEventListener("change", function (e: any) {
   const reader = new FileReader();
   reader.readAsText(res);
   reader.addEventListener("load", function () {
-    const data: string[] = formData(reader.result).split("\n");
+    const textData: string = reader.result;
+    const data: string[] = formData(textData).split("\n");
     let splitedData: string[];
     let courseList: Course[] = [];
     let gpaCourseList: Course[] = [];
@@ -216,15 +217,17 @@ form.seiseki.addEventListener("change", function (e: any) {
         splitedData[9]
       );
 
-      if (tmpCourse.courseType === "D" && isGraphChecked) {
+      const kyoushoku: boolean = tmpCourse.courseType === "D";
+
+      if (kyoushoku && isGraphChecked) {
         courseList.push(tmpCourse);
       }
 
-      if (tmpCourse.courseType === "D" && isGpaChecked) {
+      if (kyoushoku && isGpaChecked) {
         gpaCourseList.push(tmpCourse);
       }
 
-      if (tmpCourse.courseType !== "D") {
+      if (!kyoushoku) {
         courseList.push(tmpCourse);
         gpaCourseList.push(tmpCourse);
       }
@@ -264,9 +267,10 @@ form.seiseki.addEventListener("change", function (e: any) {
 
     createGraph(gradeList);
 
+    courseList.pop();
     const gpa: number =
       Math.round(getGPA(gp, degree) * Math.pow(10, 2)) / Math.pow(10, 2);
-    const message1 = courseList.length - 1 + "個の授業が検出されました";
+    const message1 = courseList.length + "個の授業が検出されました";
     const message2 =
       " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外のGPA対象外科目の除外には対応していません)";
     document.getElementById("message1")!.innerHTML = message1;
@@ -275,7 +279,6 @@ form.seiseki.addEventListener("change", function (e: any) {
     document.getElementById("selection")!.innerHTML = "";
 
     //Create table
-    courseList.pop();
     createTable(courseList);
   });
 });
