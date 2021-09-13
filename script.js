@@ -106,7 +106,6 @@ const createGraph = (gradeList) => {
             },
         },
     });
-    chart.update();
 };
 const createTable = (courseList) => {
     const ref = document.getElementById("courseTable");
@@ -145,6 +144,9 @@ const createTable = (courseList) => {
     }
     table.setAttribute("align", "center");
     ref.appendChild(table);
+};
+const reset = () => {
+    document.location.reload();
 };
 form.seiseki.addEventListener("change", function (e) {
     const res = e.target.files[0];
@@ -216,5 +218,7 @@ form.seiseki.addEventListener("change", function (e) {
         document.getElementById("selection").innerHTML = "";
         //Create table
         createTable(courseList);
+        const resetButton = "<button class='button' onclick='reset()>リセット</button>";
+        document.getElementById("reset").innerHTML = resetButton;
     });
 });

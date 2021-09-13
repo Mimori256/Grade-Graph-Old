@@ -103,7 +103,7 @@ const getGPA = (gp: number, degree: number): number => {
 };
 
 const createGraph = (gradeList: number[]): void => {
-  const ctx = document.getElementById("chart");
+  const ctx = <HTMLCanvasElement>document.getElementById("chart");
   const percentageData = getPercentage(gradeList);
   const labels = createLabels(percentageData);
   const chart = new Chart(ctx, {
@@ -133,7 +133,6 @@ const createGraph = (gradeList: number[]): void => {
       },
     },
   });
-  chart.update();
 };
 
 const createTable = (courseList: Course[]): void => {
@@ -188,7 +187,7 @@ form.seiseki.addEventListener("change", function (e: any) {
   const reader = new FileReader();
   reader.readAsText(res);
   reader.addEventListener("load", function () {
-    const textData: string = reader.result;
+    const textData: any = reader.result;
     const data: string[] = formData(textData).split("\n");
     let splitedData: string[];
     let courseList: Course[] = [];
@@ -248,7 +247,7 @@ form.seiseki.addEventListener("change", function (e: any) {
       if (!courseList.length || !gpaCourseList.length) {
         throw new Error("授業が存在しません");
       }
-    } catch (e) {
+    } catch (e: any) {
       alert(e.message);
       document.location.reload();
     }
