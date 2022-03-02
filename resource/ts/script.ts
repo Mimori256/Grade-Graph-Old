@@ -34,12 +34,14 @@ const getGradeList = (courseList: Course[]): number[] => {
   const gradeOrder: string[] = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
 
   let grade: string = "";
+  let degree: number;
   let gradeIndex: number;
 
   for (let i: number = 0; i < courseList.length; i++) {
     grade = courseList[i].grade;
+    degree = courseList[i].degree
     gradeIndex = gradeOrder.indexOf(grade);
-    gradeList[gradeIndex]++;
+    gradeList[gradeIndex] += degree;
   }
   return gradeList;
 };

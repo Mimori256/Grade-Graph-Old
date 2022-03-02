@@ -1,55 +1,58 @@
-class Course {
-    constructor(name, degree, grade, courseType, year) {
+var Course = /** @class */ (function () {
+    function Course(name, degree, grade, courseType, year) {
         this.name = name;
         this.degree = degree;
         this.grade = grade;
         this.courseType = courseType;
         this.year = year;
     }
-}
-const form = document.forms.seiseki;
-const formData = (data) => {
+    return Course;
+}());
+var form = document.forms.seiseki;
+var formData = function (data) {
     data = data.replace(/\"/g, "");
     data = data.replace(/\r/g, "");
     data = data.replace(/\\/g, "");
     return data;
 };
-const getGradeList = (courseList) => {
-    let gradeList = [0, 0, 0, 0, 0, 0, 0, 0];
-    const gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
-    let grade = "";
-    let gradeIndex;
-    for (let i = 0; i < courseList.length; i++) {
+var getGradeList = function (courseList) {
+    var gradeList = [0, 0, 0, 0, 0, 0, 0, 0];
+    var gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
+    var grade = "";
+    var degree;
+    var gradeIndex;
+    for (var i = 0; i < courseList.length; i++) {
         grade = courseList[i].grade;
+        degree = courseList[i].degree;
         gradeIndex = gradeOrder.indexOf(grade);
-        gradeList[gradeIndex]++;
+        gradeList[gradeIndex] += degree;
     }
     return gradeList;
 };
-const filterByYear = (list, year) => {
-    return list.filter((course) => course.year === year);
+var filterByYear = function (list, year) {
+    return list.filter(function (course) { return course.year === year; });
 };
-const getGp = (courseList) => {
-    let gp = 0;
-    let degree = 0;
-    let gradeIndex;
-    let grade = "";
-    const gradeOrder = ["A+", "A", "B", "C", "D"];
-    let degreeList = [0, 0, 0, 0, 0];
-    const multipleList = [4.3, 4, 3, 2, 0];
-    for (let i = 0; i < courseList.length; i++) {
+var getGp = function (courseList) {
+    var gp = 0;
+    var degree = 0;
+    var gradeIndex;
+    var grade = "";
+    var gradeOrder = ["A+", "A", "B", "C", "D"];
+    var degreeList = [0, 0, 0, 0, 0];
+    var multipleList = [4.3, 4, 3, 2, 0];
+    for (var i = 0; i < courseList.length; i++) {
         grade = courseList[i].grade;
         degree = courseList[i].degree;
         gradeIndex = gradeOrder.indexOf(grade);
         degreeList[gradeIndex] += degree;
     }
-    for (let i = 0; i < 5; i++) {
+    for (var i = 0; i < 5; i++) {
         gp += degreeList[i] * multipleList[i];
     }
     return gp;
 };
-const createLabels = (list) => {
-    const l = list.map((x) => String(x));
+var createLabels = function (list) {
+    var l = list.map(function (x) { return String(x); });
     return [
         "A+ (".concat(l[0], "%)"),
         "A (".concat(l[1], "%)"),
@@ -61,25 +64,25 @@ const createLabels = (list) => {
         "履修中 (".concat(l[7], "%)"),
     ];
 };
-const getPercentage = (l) => {
-    const getSum = (l) => l.reduce((a, x) => a + x);
-    const sum = getSum(l);
-    let percentageList = [];
-    let value;
-    l.forEach((n) => {
+var getPercentage = function (l) {
+    var getSum = function (l) { return l.reduce(function (a, x) { return a + x; }); };
+    var sum = getSum(l);
+    var percentageList = [];
+    var value;
+    l.forEach(function (n) {
         value = (n / sum) * 100;
         percentageList.push(Math.round(value * Math.pow(10, 1)) / Math.pow(10, 1));
     });
     return percentageList;
 };
-const getGPA = (gp, degree) => {
+var getGPA = function (gp, degree) {
     return gp / degree;
 };
-const createGraph = (gradeList) => {
-    const ctx = document.getElementById("chart");
-    const percentageData = getPercentage(gradeList);
-    const labels = createLabels(percentageData);
-    const chart = new Chart(ctx, {
+var createGraph = function (gradeList) {
+    var ctx = document.getElementById("chart");
+    var percentageData = getPercentage(gradeList);
+    var labels = createLabels(percentageData);
+    var chart = new Chart(ctx, {
         type: "pie",
         data: {
             labels: labels,
@@ -95,25 +98,25 @@ const createGraph = (gradeList) => {
                         "#4b0082",
                         "#808080",
                     ],
-                    data: gradeList,
+                    data: gradeList
                 },
-            ],
+            ]
         },
         options: {
             title: {
                 display: true,
-                text: "あなたの成績",
-            },
-        },
+                text: "あなたの成績"
+            }
+        }
     });
 };
-const createTable = (courseList) => {
-    const ref = document.getElementById("courseTable");
-    let grade;
-    let table = document.createElement("table");
-    let tmpList = [[], [], [], [], [], [], [], []];
-    const gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
-    const gradeColor = [
+var createTable = function (courseList) {
+    var ref = document.getElementById("courseTable");
+    var grade;
+    var table = document.createElement("table");
+    var tmpList = [[], [], [], [], [], [], [], []];
+    var gradeOrder = ["A+", "A", "B", "C", "D", "P", "F", "履修中"];
+    var gradeColor = [
         "#FF9999",
         "#FFCC99",
         "#99CCFF",
@@ -123,19 +126,19 @@ const createTable = (courseList) => {
         "#E599FF",
         "#CCCCCC",
     ];
-    for (let i = 0; i < courseList.length; i++) {
+    for (var i = 0; i < courseList.length; i++) {
         grade = courseList[i].grade;
         tmpList[gradeOrder.indexOf(grade)].push(courseList[i]);
     }
     //Create a new list ordered by grade
-    let newCourseList = tmpList.reduce((newArr, elem) => {
+    var newCourseList = tmpList.reduce(function (newArr, elem) {
         return newArr.concat(elem);
     }, []);
-    for (let i = 0; i < newCourseList.length; i++) {
-        let row = table.insertRow();
-        let cell1 = row.insertCell();
+    for (var i = 0; i < newCourseList.length; i++) {
+        var row = table.insertRow();
+        var cell1 = row.insertCell();
         cell1.innerText = newCourseList[i].name;
-        let cell2 = row.insertCell();
+        var cell2 = row.insertCell();
         cell2.innerText = newCourseList[i].grade;
         cell1.style.backgroundColor =
             gradeColor[gradeOrder.indexOf(newCourseList[i].grade)];
@@ -145,30 +148,27 @@ const createTable = (courseList) => {
     table.setAttribute("align", "center");
     ref.appendChild(table);
 };
-const reset = () => {
-    document.location.reload();
-};
 form.seiseki.addEventListener("change", function (e) {
-    const res = e.target.files[0];
-    const reader = new FileReader();
+    var res = e.target.files[0];
+    var reader = new FileReader();
     reader.readAsText(res);
     reader.addEventListener("load", function () {
-        const textData = reader.result;
-        const data = formData(textData).split("\n");
-        let splitedData;
-        let courseList = [];
-        let gpaCourseList = [];
-        let tmpCourse;
+        var textData = reader.result;
+        var data = formData(textData).split("\n");
+        var splitedData;
+        var courseList = [];
+        var gpaCourseList = [];
+        var tmpCourse;
         //Check the selected year
-        let year = document.getElementById("nendo")
+        var year = document.getElementById("nendo")
             .value;
         //Get the values of the checkboxes
-        const isGraphChecked = (document.getElementById("graphCheck")).checked;
-        const isGpaChecked = (document.getElementById("gpaCheck")).checked;
-        for (let i = 0; i < data.length; i++) {
+        var isGraphChecked = (document.getElementById("graphCheck")).checked;
+        var isGpaChecked = (document.getElementById("gpaCheck")).checked;
+        for (var i = 0; i < data.length; i++) {
             splitedData = data[i].split(",");
             tmpCourse = new Course(splitedData[3], Number(splitedData[4]), splitedData[7], splitedData[8], splitedData[9]);
-            const kyoushoku = tmpCourse.courseType === "D";
+            var kyoushoku = tmpCourse.courseType === "D";
             if (kyoushoku && isGraphChecked) {
                 courseList.push(tmpCourse);
             }
@@ -198,27 +198,25 @@ form.seiseki.addEventListener("change", function (e) {
             alert(e.message);
             document.location.reload();
         }
-        let degree = 0;
+        var degree = 0;
         //Calculate the number of degree
-        for (let i = 0; i < gpaCourseList.length; i++) {
+        for (var i = 0; i < gpaCourseList.length; i++) {
             if (["A+", "A", "B", "C", "D"].indexOf(gpaCourseList[i].grade) !== -1) {
                 degree += Number(gpaCourseList[i].degree);
             }
         }
-        const gradeList = getGradeList(courseList);
-        const gp = getGp(gpaCourseList);
+        var gradeList = getGradeList(courseList);
+        var gp = getGp(gpaCourseList);
         createGraph(gradeList);
         courseList.pop();
-        const gpa = Math.round(getGPA(gp, degree) * Math.pow(10, 2)) / Math.pow(10, 2);
-        const message1 = courseList.length + "個の授業が検出されました";
-        const message2 = " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外のGPA対象外科目の除外には対応していません)";
+        var gpa = Math.round(getGPA(gp, degree) * Math.pow(10, 2)) / Math.pow(10, 2);
+        var message1 = courseList.length + "個の授業が検出されました";
+        var message2 = " あなたのGPA(小数点第2位で四捨五入、P/F評価、履修中の科目は除外、教職以外のGPA対象外科目の除外には対応していません)";
         document.getElementById("message1").innerHTML = message1;
         document.getElementById("message2").innerHTML = message2;
         document.getElementById("gpa").innerHTML = String(gpa);
         document.getElementById("selection").innerHTML = "";
         //Create table
         createTable(courseList);
-        const resetButton = "<button class='button' onclick='reset()>リセット</button>";
-        document.getElementById("reset").innerHTML = resetButton;
     });
 });
