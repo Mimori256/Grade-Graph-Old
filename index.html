@@ -17,6 +17,7 @@
         年度を選択
         <select id="nendo">
           <option value="all" selected>すべての年度</option>
+          <option value="2022">2022</option>
           <option value="2021">2021</option>
           <option value="2020">2020</option>
           <option value="2019">2019</option>
@@ -34,7 +35,7 @@
           <summary>教職をGPAに含む学類の詳細</summary>
           <p>
             応用理工学類のみが、教職がGPA対象外であることを明言しています。その他の学群・学類については<a
-              href="https://www.tsukuba.ac.jp/education/ug-courses-directory/2021/pdf/5-2.pdf"
+              href="https://www.tsukuba.ac.jp/education/ug-courses-directory/2022/pdf/5-2.pdf"
               target="_blank"
               rel="noopener"
               >学群等履修細則</a
@@ -43,14 +44,14 @@
         </details>
       </div>
       <br /><br />
-      <canvas id="chart"></canvas>
+      <canvas id="chart" style:="max-width:100%; max-height=30%;"></canvas>
       <br />
       <div id="message2">
         <h2>使い方</h2>
         <p>
           <a href="https://twins.tsukuba.ac.jp/" target="_blank" rel="noopener"
             >Twins</a
-          >にログインして、「成績」をクリックして、ページ下部の表示を200件にして表示をクリックしてから、CSVファイルをダウンロードしてください
+          >にログインして、「成績」をクリックして、ダウンロードボタンを押して、ファイルをダウンロードしてください
         </p>
         <img src="resource/img/1.png" alt="twins" />
         <p>ダウンロードしたファイルをこのページで選択してください</p>
