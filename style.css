@@ -2,17 +2,18 @@ body {
   text-align: center;
 }
 
-canvas {
-  position: relative;
-  max-width: 100%;
-  max-height: 30%;
+#result {
+  width: 35% !important;
+  height: 35% !important;
+  margin: auto;
+  margin-bottom: 20% !important;
 }
 
 @media screen and (max-width: 1100px) {
-  canvas {
-    position: relative;
-    max-width: 100%;
-    max-height: 22%;
+  #result {
+    width: 80% !important;
+    height: 80% !important;
+    margin: auto !important;
   }
 }
 
